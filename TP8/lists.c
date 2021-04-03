@@ -27,6 +27,7 @@ element *get_elet_list(element *L, int v);
 void concat_list(element *l1, element *l2);
 int get_val_list(element *L, int i);
 void reverse_list(element *L);
+element *fusion_list(element *l1, element *l2);
 
 int main(int argc, char const *argv[])
 {
@@ -45,13 +46,26 @@ int main(int argc, char const *argv[])
 
     print_list(list);
     printf("element %d est %d\n", 3, get_val_list(list, 3));
-    reverse_list(list);
-    printf("reversed list :\n");
-    print_list(list);
 
-    //element *new_list = copy_list(list);
+    // construire une nouvelle liste
+
+    element *new_list = cons_list();
+    add_fst_list(new_list, 80);
+    add_fst_list(new_list, 30);
+    add_fst_list(new_list, 20);
+
+    // make the fusion between new_list and the list entered in the command line
+
+    element *fus_list = fusion_list(list, new_list);
+    printf("this is the fused list:\n");
+    print_list(fus_list);
+
     //printf("this is the new list \n");
     //print_list(new_list);
+
+    reverse_list(fus_list);
+    printf("reversed list :\n");
+    print_list(fus_list);
 
     return 0;
 }
@@ -274,7 +288,7 @@ element *fusion_list(element *l1, element *l2)
 {
     element *new_list = cons_list();
     element *n1 = l1->next;
-    element *n2 = l2->val;
+    element *n2 = l2->next;
 
     while (n1 != l1 && n2 != l2)
     {
@@ -286,14 +300,14 @@ element *fusion_list(element *l1, element *l2)
         else
         {
             add_lst_list(new_list, n2->val);
-            n2->next;
+            n2 = n2->next;
         }
     }
     if (n1 == l1)
         while (n2 != l2)
         {
             add_lst_list(new_list, n2->val);
-            n2 = n2->val;
+            n2 = n2->next;
         }
     else
         while (n1 != l1)
